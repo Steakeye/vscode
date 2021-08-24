@@ -708,12 +708,10 @@ class ExtensionsContributions extends Disposable implements IWorkbenchContributi
 			category: ExtensionsLocalizedLabel,
 			menu: [{
 				id: MenuId.CommandPalette,
-				//when: ContextKeyOrExpr.create([CONTEXT_HAS_LOCAL_SERVER, CONTEXT_HAS_REMOTE_SERVER])
-				when: ContextKeyOrExpr.create([CONTEXT_HAS_LOCAL_SERVER, CONTEXT_HAS_REMOTE_SERVER, CONTEXT_HAS_WEB_SERVER])
+				when: ContextKeyOrExpr.create([CONTEXT_HAS_LOCAL_SERVER, CONTEXT_HAS_REMOTE_SERVER])
 			}, {
 				id: MenuId.ViewContainerTitle,
-				//when: ContextKeyAndExpr.create([ContextKeyEqualsExpr.create('viewContainer', VIEWLET_ID), ContextKeyOrExpr.create([CONTEXT_HAS_LOCAL_SERVER, CONTEXT_HAS_REMOTE_SERVER])]),
-				when: ContextKeyAndExpr.create([ContextKeyEqualsExpr.create('viewContainer', VIEWLET_ID), ContextKeyOrExpr.create([CONTEXT_HAS_LOCAL_SERVER, CONTEXT_HAS_REMOTE_SERVER, CONTEXT_HAS_WEB_SERVER])]),
+				when: ContextKeyAndExpr.create([ContextKeyEqualsExpr.create('viewContainer', VIEWLET_ID), ContextKeyOrExpr.create([CONTEXT_HAS_LOCAL_SERVER, CONTEXT_HAS_REMOTE_SERVER])]),
 				group: '3_install',
 				order: 1
 			}],
@@ -722,6 +720,35 @@ class ExtensionsContributions extends Disposable implements IWorkbenchContributi
 				const commandService = accessor.get(ICommandService);
 				const vsixPaths = await fileDialogService.showOpenDialog({
 					title: localize('installFromVSIX', "Install from VSIX"),
+					filters: [{ name: 'VSIX Extensions', extensions: ['vsix'] }],
+					canSelectFiles: true,
+					canSelectMany: true,
+					openLabel: mnemonicButtonLabel(localize({ key: 'installButton', comment: ['&& denotes a mnemonic'] }, "&&Install"))
+				});
+				if (vsixPaths) {
+					await commandService.executeCommand(INSTALL_EXTENSION_FROM_VSIX_COMMAND_ID, vsixPaths);
+				}
+			}
+		});
+
+		this.registerExtensionAction({
+			id: SELECT_INSTALL_VSIX_EXTENSION_COMMAND_ID,
+			title: { value: localize('InstallFromVSIXWebExtension', "Install Web Extension from VSIX..."), original: 'Install Web Extension from VSIX...' },
+			category: ExtensionsLocalizedLabel,
+			menu: [{
+				id: MenuId.CommandPalette,
+				when: ContextKeyOrExpr.create([CONTEXT_HAS_LOCAL_SERVER, CONTEXT_HAS_REMOTE_SERVER, CONTEXT_HAS_WEB_SERVER])
+			}, {
+				id: MenuId.ViewContainerTitle,
+				when: ContextKeyAndExpr.create([ContextKeyEqualsExpr.create('viewContainer', VIEWLET_ID), ContextKeyOrExpr.create([CONTEXT_HAS_LOCAL_SERVER, CONTEXT_HAS_REMOTE_SERVER, CONTEXT_HAS_WEB_SERVER])]),
+				group: '3_install',
+				order: 1
+			}],
+			run: async (accessor: ServicesAccessor) => {
+				const fileDialogService = accessor.get(IFileDialogService);
+				const commandService = accessor.get(ICommandService);
+				const vsixPaths = await fileDialogService.showOpenDialog({
+					title: localize('installFromVSIXWebExtension', "Install Web Extension from VSIX"),
 					filters: [{ name: 'VSIX Extensions', extensions: ['vsix'] }],
 					canSelectFiles: true,
 					canSelectMany: true,
