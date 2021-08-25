@@ -182,8 +182,10 @@ async function getCommandlineProvidedExtensionInfos() {
 		const extensionPaths = Array.isArray(extensionArg) ? extensionArg : [extensionArg];
 		await Promise.all(extensionPaths.map(async extensionPath => {
 			extensionPath = path.resolve(process.cwd(), extensionPath);
+			// console.log(`extensionPath`, extensionPath);
 			const packageJSON = await getExtensionPackageJSON(extensionPath);
 			if (packageJSON) {
+				// console.log(`packageJSON`, packageJSON);
 				const extensionId = `${packageJSON.publisher}.${packageJSON.name}`;
 				extensions.push({ scheme: SCHEME, authority: AUTHORITY, path: `/extension/${extensionId}` });
 				locations[extensionId] = extensionPath;
@@ -199,14 +201,18 @@ async function getCommandlineProvidedExtensionInfos() {
 }
 
 async function getExtensionPackageJSON(extensionPath) {
-
+	// console.log(`getExtensionPackageJSON`);
 	const packageJSONPath = path.join(extensionPath, 'package.json');
+	// console.log(`packageJSONPath`);
 	if (await exists(packageJSONPath)) {
+		// console.log(`exists(packageJSONPath)`);
 		try {
 			let packageJSON = JSON.parse((await readFile(packageJSONPath)).toString());
+			/* TODO: Uncomment this out!!!
 			if (packageJSON.main && !packageJSON.browser) {
 				return; // unsupported
 			}
+			*/
 			return packageJSON;
 		} catch (e) {
 			console.log(e);
