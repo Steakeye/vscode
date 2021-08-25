@@ -1,0 +1,919 @@
+{
+  "name": "teamhub",
+  "version": "14.0.2",
+  "publisher": "TeamHub",
+  "engines": {
+    "vscode": "^1.54.3"
+  },
+  "icon": "resources/logo.png",
+  "galleryBanner": {
+    "color": "#013",
+    "theme": "dark"
+  },
+  "displayName": "GitLive",
+  "description": "Extend VS Code with real-time collaborative superpowers",
+  "homepage": "https://git.live",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GitLiveApp/GitLive"
+  },
+  "bugs": {
+    "url": "https://github.com/GitLiveApp/GitLive/issues"
+  },
+  "categories": [
+    "SCM Providers"
+  ],
+  "keywords": [
+    "real time",
+    "live sharing",
+    "remote share",
+    "share code",
+    "collaboration"
+  ],
+  "tags": [
+    "real time",
+    "live",
+    "live share",
+    "live sharing",
+    "remote share",
+    "remote sharing",
+    "share code",
+    "collaboration",
+    "share",
+    "sharing",
+    "code discussion",
+    "cursor navigation",
+    "git",
+    "git diff",
+    "diff",
+    "git blame",
+    "pull request",
+    "git history",
+    "github",
+    "bitbucket",
+    "azure",
+    "azure devops",
+    "vscode must-have extensions",
+    "vscode",
+    "visual studio code"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./dist/extension",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "gitlive",
+          "title": "GitLive",
+          "icon": "./resources/logo.svg"
+        }
+      ]
+    },
+    "views": {
+      "gitlive": [
+        {
+          "id": "gitlive",
+          "name": ""
+        }
+      ]
+    },
+    "configuration": {
+      "title": "GitLive",
+      "properties": {
+        "GitLive.Offline Mode": {
+          "type": "boolean",
+          "scope": "application",
+          "markdownDescription": "When enabled you will appear as offline"
+        },
+        "GitLive.Hide my activity graph": {
+          "type": "boolean",
+          "scope": "application",
+          "markdownDescription": "When enabled your activity graph will not appear for you or your team"
+        },
+        "GitLive.Hide my working copy changes": {
+          "type": "boolean",
+          "scope": "application",
+          "markdownDescription": "When enabled your local file changes will not appear for you or your team"
+        },
+        "GitLive.Hide others changes in gutter": {
+          "type": "boolean",
+          "scope": "application",
+          "markdownDescription": "When enabled others changes will not show in the gutter for any file"
+        },
+        "GitLive.Issue tracker integration": {
+          "type": "string",
+          "scope": "application",
+          "enum": [
+            "Disabled",
+            "Enabled",
+            "Select issue tracker..."
+          ]
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "git.live.toggleGutterIndicators",
+        "title": "GitLive: Show other's changes",
+        "enablement": "git.live.toggleGutterIndicators.enabled",
+        "icon": {
+          "light": "./resources/light/icon-logo.svg",
+          "dark": "./resources/dark/icon-logo.svg"
+        }
+      },
+      {
+      "command": "git.live.hideGutterIndicators",
+        "title": "GitLive: Hide other's changes",
+        "enablement": "git.live.toggleGutterIndicators.enabled",
+        "icon": {
+          "light": "./resources/light/logo-light-bg.svg",
+          "dark": "./resources/dark/logo-dark-bg.svg"
+        }
+      },
+      {
+        "command": "git.live.pushedChanges",
+        "title": "✔ Pushed changes",
+        "enablement": "git.live.pushedChanges.enabled"
+      },
+      {
+        "command": "git.live.unpushedChanges",
+        "title": "✔ Unpushed changes",
+        "enablement": "git.live.unpushedChanges.enabled"
+      },
+      {
+        "command": "git.live.pushedChangesOff",
+        "title": "Pushed changes",
+        "enablement": "git.live.pushedChanges.enabled"
+      },
+      {
+        "command": "git.live.unpushedChangesOff",
+        "title": "Unpushed changes",
+        "enablement": "git.live.unpushedChanges.enabled"
+      },
+      {
+        "command": "git.live.diff.pushedChanges",
+        "title": "✔ Pushed changes",
+        "enablement": "git.live.diff.pushedChanges.enabled"
+      },
+      {
+        "command": "git.live.diff.unpushedChanges",
+        "title": "✔ Unpushed changes",
+        "enablement": "git.live.diff.unpushedChanges.enabled"
+      },
+      {
+        "command": "git.live.diff.pushedChangesOff",
+        "title": "Pushed changes",
+        "enablement": "git.live.diff.pushedChanges.enabled"
+      },
+      {
+        "command": "git.live.diff.unpushedChangesOff",
+        "title": "Unpushed changes",
+        "enablement": "git.live.diff.unpushedChanges.enabled"
+      },
+      {
+        "command": "git.live.showAccountList",
+        "title": "Manage your accounts",
+        "icon": {
+          "light": "./resources/light/icon-account.svg",
+          "dark": "./resources/dark/icon-account.svg"
+        }
+      },
+      {
+        "command": "git.live.syncTeam",
+        "title": "Sync team with repository hosting service",
+        "enablement": "git.live.syncTeam.enabled",
+        "icon": {
+          "light": "./resources/light/icon-sync.svg",
+          "dark": "./resources/dark/icon-sync.svg"
+        }
+      },
+      {
+        "command": "git.live.viewSettings",
+        "title": "Settings",
+        "icon": {
+          "light": "./resources/light/settings-gear.svg",
+          "dark": "./resources/dark/settings-gear.svg"
+        }
+      },
+      {
+        "command": "git.live.reportIssue",
+        "title": "GitLive: Report issue"
+      },
+      {
+        "command": "git.live.callPalette",
+        "title": "GitLive: Call a teammate",
+        "icon": {
+          "light": "./resources/light/call-outgoing.svg",
+          "dark": "./resources/dark/call-outgoing.svg"
+        }
+      },
+      {
+        "command": "git.live.sharePalette",
+        "title": "GitLive: Codeshare with a teammate",
+        "icon": "$(code)"
+      },
+      {
+        "command": "git.live.share",
+        "enablement": "viewItem =~ /#share=enabled/",
+        "title": "Codeshare with teammate",
+        "icon": "$(code)"
+      },
+      {
+        "command": "git.live.call",
+        "title": "Call teammate",
+        "enablement": "viewItem =~ /#call=enabled/",
+        "icon": {
+          "light": "./resources/light/call-outgoing.svg",
+          "dark": "./resources/dark/call-outgoing.svg"
+        }
+      },
+      {
+        "command": "git.live.openProfileOnGitHub",
+        "title": "Open profile on GitHub",
+        "enablement": "viewItem =~ /openProfileOnGitHub=enabled/",
+        "icon": {
+          "light": "./resources/light/icon-github.svg",
+          "dark": "./resources/dark/icon-github.svg"
+        }
+      },
+      {
+        "command": "git.live.openCurrentBranchOnGitHub",
+        "title": "Open branch on GitHub",
+        "enablement": "viewItem =~ /#openCurrentBranchOnGitHub=enabled/",
+        "icon": {
+          "light": "./resources/light/icon-open-file.svg",
+          "dark": "./resources/dark/icon-open-file.svg"
+        }
+      },
+      {
+        "command": "git.live.openCurrentIssueOnGitHub",
+        "title": "Open issue on GitHub",
+        "enablement": "viewItem =~ /#openCurrentIssueOnGitHub=enabled/",
+        "icon": {
+          "light": "./resources/light/icon-open-file.svg",
+          "dark": "./resources/dark/icon-open-file.svg"
+        }
+      },
+      {
+        "command": "git.live.compareToDefaultBranchOnGitHub",
+        "title": "Compare to default branch on GitHub",
+        "enablement": "viewItem =~ /#compareToDefaultBranchOnGitHub=enabled/",
+        "icon": {
+          "light": "./resources/light/icon-compare-branch.svg",
+          "dark": "./resources/dark/icon-compare-branch.svg"
+        }
+      },
+      {
+        "command": "git.live.openPullRequestOnGitHub",
+        "title": "Open pull request on GitHub",
+        "enablement": "viewItem =~ /#openPullRequestOnGitHub=enabled/",
+        "icon": {
+          "light": "./resources/light/icon-pr.svg",
+          "dark": "./resources/dark/icon-pr.svg"
+        }
+      },
+      {
+        "command": "git.live.openFileOnGitHub",
+        "title": "Open on GitHub",
+        "enablement": "viewItem =~ /#openFileOnGitHub=enabled/",
+        "icon": {
+          "light": "./resources/light/icon-open-file.svg",
+          "dark": "./resources/dark/icon-open-file.svg"
+        }
+      },
+      {
+        "command": "git.live.openProfileOnBitbucket",
+        "title": "Open profile on Bitbucket",
+        "enablement": "viewItem =~ /#openProfileOnBitbucket=enabled/",
+        "icon": "./resources/icon-bitbucket.svg"
+      },
+      {
+        "command": "git.live.openCurrentBranchOnBitbucket",
+        "title": "Open branch on Bitbucket",
+        "enablement": "viewItem =~ /#openCurrentBranchOnBitbucket=enabled/",
+        "icon": {
+          "light": "./resources/light/icon-open-file.svg",
+          "dark": "./resources/dark/icon-open-file.svg"
+        }
+      },
+      {
+        "command": "git.live.openCurrentIssueOnBitbucket",
+        "title": "Open issue on Bitbucket",
+        "enablement": "viewItem =~ /#openCurrentIssueOnBitbucket=enabled/",
+        "icon": {
+          "light": "./resources/light/icon-open-file.svg",
+          "dark": "./resources/dark/icon-open-file.svg"
+        }
+      },
+      {
+        "command": "git.live.compareToDefaultBranchOnBitbucket",
+        "title": "Compare to default branch on Bitbucket",
+        "enablement": "viewItem =~ /#compareToDefaultBranchOnBitbucket=enabled/",
+        "icon": {
+          "light": "./resources/light/icon-compare-branch.svg",
+          "dark": "./resources/dark/icon-compare-branch.svg"
+        }
+      },
+      {
+        "command": "git.live.openPullRequestOnBitbucket",
+        "title": "Open pull request on Bitbucket",
+        "enablement": "viewItem =~ /#openPullRequestOnBitbucket=enabled/",
+        "icon": {
+          "light": "./resources/light/icon-pr.svg",
+          "dark": "./resources/dark/icon-pr.svg"
+        }
+      },
+      {
+        "command": "git.live.openFileOnBitbucket",
+        "title": "Open on Bitbucket",
+        "enablement": "viewItem =~ /#openFileOnBitbucket=enabled/",
+        "icon": {
+          "light": "./resources/light/icon-open-file.svg",
+          "dark": "./resources/dark/icon-open-file.svg"
+        }
+      },
+      {
+        "command": "git.live.openProfileOnGitLab",
+        "title": "Open profile on GitLab",
+        "enablement": "viewItem =~ /#openProfileOnGitLab=enabled/",
+        "icon": "./resources/gitlab-icon-rgb.svg"
+      },
+      {
+        "command": "git.live.openCurrentBranchOnGitLab",
+        "title": "Open branch on GitLab",
+        "enablement": "viewItem =~ /#openCurrentBranchOnGitLab=enabled/",
+        "icon": {
+          "light": "./resources/light/icon-open-file.svg",
+          "dark": "./resources/dark/icon-open-file.svg"
+        }
+      },
+      {
+        "command": "git.live.openCurrentIssueOnGitLab",
+        "title": "Open issue on GitLab",
+        "enablement": "viewItem =~ /#openCurrentIssueOnGitLab=enabled/",
+        "icon": {
+          "light": "./resources/light/icon-open-file.svg",
+          "dark": "./resources/dark/icon-open-file.svg"
+        }
+      },
+      {
+        "command": "git.live.compareToDefaultBranchOnGitLab",
+        "title": "Compare to default branch on GitLab",
+        "enablement": "viewItem =~ /#compareToDefaultBranchOnGitLab=enabled/",
+        "icon": {
+          "light": "./resources/light/icon-compare-branch.svg",
+          "dark": "./resources/dark/icon-compare-branch.svg"
+        }
+      },
+      {
+        "command": "git.live.openPullRequestOnGitLab",
+        "title": "Open merge request on GitLab",
+        "enablement": "viewItem =~ /#openPullRequestOnGitLab=enabled/",
+        "icon": {
+          "light": "./resources/light/icon-pr.svg",
+          "dark": "./resources/dark/icon-pr.svg"
+        }
+      },
+      {
+        "command": "git.live.openFileOnGitLab",
+        "title": "Open on GitLab",
+        "enablement": "viewItem =~ /#openFileOnGitLab=enabled/",
+        "icon": {
+          "light": "./resources/light/icon-open-file.svg",
+          "dark": "./resources/dark/icon-open-file.svg"
+        }
+      },
+      {
+        "command": "git.live.openProfileOnAzure",
+        "title": "Open profile on Azure DevOps",
+        "enablement": "viewItem =~ /openProfileOnAzure=enabled/",
+        "icon": "./resources/light/icon-azure.svg"
+      },
+      {
+        "command": "git.live.openCurrentBranchOnAzure",
+        "title": "Open branch on Azure DevOps",
+        "enablement": "viewItem =~ /#openCurrentBranchOnAzure=enabled/",
+        "icon": {
+          "light": "./resources/light/icon-open-file.svg",
+          "dark": "./resources/dark/icon-open-file.svg"
+        }
+      },
+      {
+        "command": "git.live.openCurrentIssueOnAzure",
+        "title": "Open issue on Azure DevOps",
+        "enablement": "viewItem =~ /#openCurrentIssueOnAzure=enabled/",
+        "icon": {
+          "light": "./resources/light/icon-open-file.svg",
+          "dark": "./resources/dark/icon-open-file.svg"
+        }
+      },
+      {
+        "command": "git.live.compareToDefaultBranchOnAzure",
+        "title": "Compare to default branch on Azure DevOps",
+        "enablement": "viewItem =~ /#compareToDefaultBranchOnAzure=enabled/",
+        "icon": {
+          "light": "./resources/light/icon-compare-branch.svg",
+          "dark": "./resources/dark/icon-compare-branch.svg"
+        }
+      },
+      {
+        "command": "git.live.openPullRequestOnAzure",
+        "title": "Open pull request on Azure DevOps",
+        "enablement": "viewItem =~ /#openPullRequestOnAzure=enabled/",
+        "icon": {
+          "light": "./resources/light/icon-pr.svg",
+          "dark": "./resources/dark/icon-pr.svg"
+        }
+      },
+      {
+        "command": "git.live.openFileOnAzure",
+        "title": "Open on Azure DevOps",
+        "enablement": "viewItem =~ /#openFileOnAzure=enabled/",
+        "icon": {
+          "light": "./resources/light/icon-open-file.svg",
+          "dark": "./resources/dark/icon-open-file.svg"
+        }
+      },
+      {
+        "command": "git.live.cherryPick",
+        "title": "Cherry pick all changes",
+        "enablement": "viewItem =~ /#cherryPick=enabled/",
+        "icon": {
+          "light": "./resources/light/cherry-pick.svg",
+          "dark": "./resources/dark/cherry-pick.svg"
+        }
+      },
+      {
+        "command": "git.live.deleteWorkingCopy",
+        "title": "Remove from GitLive",
+        "enablement": "viewItem =~ /#deleteWorkingCopy=enabled/"
+      },
+      {
+        "command": "git.live.openCurrentIssueOnJira",
+        "title": "Open issue on Jira",
+        "enablement": "viewItem =~ /#openCurrentIssueOnJira=enabled/",
+        "icon": {
+          "light": "./resources/light/icon-open-file.svg",
+          "dark": "./resources/dark/icon-open-file.svg"
+        }
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "git.live.toggleGutterIndicators",
+          "group": "navigation",
+          "when": "git.live.activeEditorType != gitlive-diff && git.live.activeEditorType != gitlive && !git.live.toggleGutterIndicators.selected"
+        },
+        {
+          "command": "git.live.hideGutterIndicators",
+          "group": "navigation",
+          "when": "git.live.activeEditorType != gitlive-diff && git.live.activeEditorType != gitlive && git.live.toggleGutterIndicators.selected"
+        },
+        {
+          "submenu": "editor/title/viewOptions",
+          "group": "navigation@90",
+          "when": "git.live.activeEditorType == gitlive-diff"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "git.live.callPalette",
+          "when": "git.live.callPalette.enabled"
+        },
+        {
+          "command": "git.live.sharePalette",
+          "when": "git.live.sharePalette.enabled"
+        },
+        {
+          "command": "git.live.openCurrentIssueOnJira",
+          "when": "false"
+        },
+        {
+          "command": "git.live.syncTeam",
+          "when": "false"
+        },
+        {
+          "command": "git.live.viewSettings",
+          "when": "false"
+        },
+        {
+          "command": "git.live.pushedChanges",
+          "when": "false"
+        },
+        {
+          "command": "git.live.pushedChangesOff",
+          "when": "false"
+        },
+        {
+          "command": "git.live.unpushedChanges",
+          "when": "false"
+        },
+        {
+          "command": "git.live.unpushedChangesOff",
+          "when": "false"
+        },
+        {
+          "command": "git.live.diff.pushedChanges",
+          "when": "false"
+        },
+        {
+          "command": "git.live.diff.pushedChangesOff",
+          "when": "false"
+        },
+        {
+          "command": "git.live.diff.unpushedChanges",
+          "when": "false"
+        },
+        {
+          "command": "git.live.diff.unpushedChangesOff",
+          "when": "false"
+        },
+        {
+          "command": "git.live.showAccountList",
+          "when": "false"
+        },
+        {
+          "command": "git.live.call",
+          "when": "false"
+        },        
+        {
+          "command": "git.live.share",
+          "when": "false"
+        },
+        {
+          "command": "git.live.openProfileOnGitHub",
+          "when": "false"
+        },
+        {
+          "command": "git.live.openCurrentBranchOnGitHub",
+          "when": "false"
+        },
+        {
+          "command": "git.live.openCurrentIssueOnGitHub",
+          "when": "false"
+        },
+        {
+          "command": "git.live.compareToDefaultBranchOnGitHub",
+          "when": "false"
+        },
+        {
+          "command": "git.live.openPullRequestOnGitHub",
+          "when": "false"
+        },
+        {
+          "command": "git.live.openFileOnGitHub",
+          "when": "false"
+        },
+        {
+          "command": "git.live.openProfileOnBitbucket",
+          "when": "false"
+        },
+        {
+          "command": "git.live.openFileOnBitbucket",
+          "when": "false"
+        },
+        {
+          "command": "git.live.openCurrentBranchOnBitbucket",
+          "when": "false"
+        },
+        {
+          "command": "git.live.openCurrentIssueOnBitbucket",
+          "when": "false"
+        },
+        {
+          "command": "git.live.compareToDefaultBranchOnBitbucket",
+          "when": "false"
+        },
+        {
+          "command": "git.live.openPullRequestOnBitbucket",
+          "when": "false"
+        },
+        {
+          "command": "git.live.openProfileOnGitLab",
+          "when": "false"
+        },
+        {
+          "command": "git.live.openFileOnGitLab",
+          "when": "false"
+        },
+        {
+          "command": "git.live.openCurrentBranchOnGitLab",
+          "when": "false"
+        },
+        {
+          "command": "git.live.openCurrentIssueOnGitLab",
+          "when": "false"
+        },
+        {
+          "command": "git.live.compareToDefaultBranchOnGitLab",
+          "when": "false"
+        },
+        {
+          "command": "git.live.openPullRequestOnGitLab",
+          "when": "false"
+        },
+        {
+          "command": "git.live.openProfileOnAzure",
+          "when": "false"
+        },
+        {
+          "command": "git.live.openCurrentBranchOnAzure",
+          "when": "false"
+        },
+        {
+          "command": "git.live.openCurrentIssueOnAzure",
+          "when": "false"
+        },
+        {
+          "command": "git.live.compareToDefaultBranchOnAzure",
+          "when": "false"
+        },
+        {
+          "command": "git.live.openPullRequestOnAzure",
+          "when": "false"
+        },
+        {
+          "command": "git.live.openFileOnAzure",
+          "when": "false"
+        },
+        {
+          "command": "git.live.cherryPick",
+          "when": "false"
+        },
+        {
+          "command": "git.live.deleteWorkingCopy",
+          "when": "false"
+        }
+      ],
+      "editor/title/viewOptions": [
+        {
+          "command": "git.live.diff.pushedChangesOff",
+          "group": "navigation@90",
+          "when": "!git.live.diff.pushedChanges.selected"
+        },
+        {
+          "command": "git.live.diff.pushedChanges",
+          "group": "navigation@90",
+          "when": "git.live.diff.pushedChanges.selected"
+        },
+        {
+          "command": "git.live.diff.unpushedChangesOff",
+          "group": "navigation@95",
+          "when": "!git.live.diff.unpushedChanges.selected"
+        },
+        {
+          "command": "git.live.diff.unpushedChanges",
+          "group": "navigation@95",
+          "when": "git.live.diff.unpushedChanges.selected"
+        }
+      ],
+      "view/title": [
+        {
+          "submenu": "view/title/viewOptions",
+          "when": "view == gitlive",
+          "group": "navigation@90"
+        },
+        {
+          "command": "git.live.syncTeam",
+          "when": "view == gitlive",
+          "group": "navigation@100"
+        },
+        {
+          "command": "git.live.showAccountList",
+          "when": "view == gitlive",
+          "group": "navigation@100"
+        },
+        {
+          "command": "git.live.viewSettings",
+          "when": "view == gitlive",
+          "group": "navigation@100"
+        }
+      ],
+      "view/title/viewOptions": [
+        {
+          "command": "git.live.pushedChangesOff",
+          "group": "navigation@90",
+          "when": "!git.live.pushedChanges.selected"
+        },
+        {
+          "command": "git.live.pushedChanges",
+          "group": "navigation@90",
+          "when": "git.live.pushedChanges.selected"
+        },
+        {
+          "command": "git.live.unpushedChangesOff",
+          "group": "navigation@95",
+          "when": "!git.live.unpushedChanges.selected"
+        },
+        {
+          "command": "git.live.unpushedChanges",
+          "group": "navigation@95",
+          "when": "git.live.unpushedChanges.selected"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "git.live.call",
+          "when": "viewItem =~ /#call/",
+          "group": "inline@1"
+        },
+        {
+          "command": "git.live.share",
+          "when": "viewItem =~ /#share/",
+          "group": "inline@2"
+        },
+        {
+          "command": "git.live.openCurrentIssueOnJira",
+          "when": "viewItem =~ /#openCurrentIssueOnJira/",
+          "group": "inline@3"
+        },
+        {
+          "command": "git.live.openCurrentIssueOnGitHub",
+          "when": "viewItem =~ /#openCurrentIssueOnGitHub/",
+          "group": "inline@3"
+        },
+        {
+          "command": "git.live.openCurrentIssueOnBitbucket",
+          "when": "viewItem =~ /#openCurrentIssueOnBitbucket/",
+          "group": "inline@3"
+        },
+        {
+          "command": "git.live.openCurrentIssueOnGitLab",
+          "when": "viewItem =~ /#openCurrentIssueOnGitLab/",
+          "group": "inline@3"
+        },
+        {
+          "command": "git.live.openCurrentIssueOnAzure",
+          "when": "viewItem =~ /#openCurrentIssueOnAzure/",
+          "group": "inline@3"
+        },
+        {
+          "command": "git.live.openProfileOnGitHub",
+          "when": "viewItem =~ /#openProfileOnGitHub/",
+          "group": "navigation@1"
+        },
+        {
+          "command": "git.live.openProfileOnBitbucket",
+          "when": "viewItem =~ /#openProfileOnBitbucket/",
+          "group": "navigation@2"
+        },
+        {
+          "command": "git.live.openProfileOnGitLab",
+          "when": "viewItem =~ /#openProfileOnGitLab/",
+          "group": "navigation@3"
+        },
+        {
+          "command": "git.live.openProfileOnAzure",
+          "when": "viewItem =~ /#openProfileOnAzure/",
+          "group": "navigation@4"
+        },
+        {
+          "command": "git.live.compareToDefaultBranchOnGitHub",
+          "when": "viewItem =~ /#compareToDefaultBranchOnGitHub/",
+          "group": "navigation@1"
+        },
+        {
+          "command": "git.live.compareToDefaultBranchOnBitbucket",
+          "when": "viewItem =~ /#compareToDefaultBranchOnBitbucket/",
+          "group": "navigation@1"
+        },
+        {
+          "command": "git.live.compareToDefaultBranchOnGitLab",
+          "when": "viewItem =~ /#compareToDefaultBranchOnGitLab/",
+          "group": "navigation@1"
+        },
+        {
+          "command": "git.live.compareToDefaultBranchOnAzure",
+          "when": "viewItem =~ /#compareToDefaultBranchOnAzure/",
+          "group": "navigation@1"
+        },
+        {
+          "command": "git.live.openPullRequestOnGitHub",
+          "when": "viewItem =~ /#openPullRequestOnGitHub/",
+          "group": "navigation@2"
+        },
+        {
+          "command": "git.live.openPullRequestOnBitbucket",
+          "when": "viewItem =~ /#openPullRequestOnBitbucket/",
+          "group": "navigation@2"
+        },
+        {
+          "command": "git.live.openPullRequestOnGitLab",
+          "when": "viewItem =~ /#openPullRequestOnGitLab/",
+          "group": "navigation@2"
+        },
+        {
+          "command": "git.live.openPullRequestOnGitLab",
+          "when": "viewItem =~ /#openPullRequestOnAzure/",
+          "group": "navigation@2"
+        },
+        {
+          "command": "git.live.openCurrentBranchOnGitHub",
+          "when": "viewItem =~ /#openCurrentBranchOnGitHub/",
+          "group": "navigation@3"
+        },
+        {
+          "command": "git.live.openCurrentBranchOnBitbucket",
+          "when": "viewItem =~ /#openCurrentBranchOnBitbucket/",
+          "group": "navigation@3"
+        },
+        {
+          "command": "git.live.openCurrentBranchOnGitLab",
+          "when": "viewItem =~ /#openCurrentBranchOnGitLab/",
+          "group": "navigation@3"
+        },
+        {
+          "command": "git.live.openCurrentBranchOnAzure",
+          "when": "viewItem =~ /#openCurrentBranchOnAzure/",
+          "group": "navigation@3"
+        },
+        {
+          "command": "git.live.cherryPick",
+          "when": "viewItem =~ /#cherryPick/",
+          "group": "inline@2"
+        },
+        {
+          "command": "git.live.deleteWorkingCopy",
+          "when": "viewItem =~ /#deleteWorkingCopy/",
+          "group": "navigation@3"
+        },
+        {
+          "command": "git.live.openFileOnGitHub",
+          "when": "viewItem =~ /#openFileOnGitHub/",
+          "group": "inline@3"
+        },
+        {
+          "command": "git.live.openFileOnBitbucket",
+          "when": "viewItem =~ /#openFileOnBitbucket/",
+          "group": "inline@3"
+        },
+        {
+          "command": "git.live.openFileOnGitLab",
+          "when": "viewItem =~ /#openFileOnGitLab/",
+          "group": "inline@3"
+        },
+        {
+          "command": "git.live.openFileOnAzure",
+          "when": "viewItem =~ /#openFileOnAzure/",
+          "group": "inline@3"
+        }
+      ]
+    },
+    "submenus": [
+      {
+        "id": "editor/title/viewOptions",
+        "label": "View Options",
+        "icon": "$(filter)"
+      },
+      {
+        "id": "view/title/viewOptions",
+        "label": "View Options",
+        "icon": "$(filter)"
+      }
+    ]
+  },
+  "extensionDependencies": [
+    "vscode.git"
+  ],
+  "scripts": {
+    "vscode:prepublish": "webpack --mode production --config webpack.prod.config.js --display-error-details",
+    "start-debug": "webpack --mode development --config webpack.dev.config.js --display-error-details",
+    "watch": "webpack --config webpack.dev.config.js --mode none --watch",
+    "test-compile": "tsc -p ./",
+    "test": "node ./out/test/runTest.js",
+    "update-file-icons": "node ./scripts/sync-file-icons.js",
+    "deploy": "vsce publish --yarn"
+  },
+  "devDependencies": {
+    "@sentry/types": "6.4.1",
+    "@sentry/webpack-plugin": "^1.15.1",
+    "@types/glob": "^7.1.1",
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^12.12.6",
+    "@types/vscode": "^1.54.0",
+    "glob": "^7.1.6",
+    "mocha": "^7.1.1",
+    "mocha-junit-reporter": "^2.0.0",
+    "ts-loader": "^6.0.4",
+    "tslint": "^5.8.0",
+    "typescript": "^4.0.5",
+    "vsce": "^1.88.0",
+    "vscode-test": "^1.3.0",
+    "webpack": "^4.35.2",
+    "webpack-cli": "^3.3.5",
+    "webpack-merge": "^4.2.1"
+  },
+  "dependencies": {
+    "@gitliveapp/core": "8.0.25",
+    "@sentry/integrations": "^6.4.1",
+    "@sentry/node": "^6.4.1",
+    "axios": "^0.21.1",
+    "iconv-lite-umd": "^0.6.8",
+    "temp-write": "^4.0.0",
+    "vscode-textbuffer": "^1.0.0",
+    "vsls": "^1.0.3015"
+  }
+}
