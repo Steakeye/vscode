@@ -55,6 +55,14 @@ fi
 
 echo "Extracting VSIX '$source_path' to '$target_path'"
 
-unzip "$source_path" -d "$target_path"
+unzip -q "$source_path" "extension/*" -d "$target_path"
+
+extracted_folder="$target_path/extension"
+
+# Move extension content to target folder and clean up
+mv "$extracted_folder"/* "$target_path"
+rmdir  "$extracted_folder"
+
+echo "Extraction complete!"
 
 exit $?
