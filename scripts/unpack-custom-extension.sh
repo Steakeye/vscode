@@ -12,6 +12,7 @@ fi
 
 source_path=$1
 target_folder=$2
+target_parent="custom-extensions"
 
 function abortScript {
 echo "Aborting script"
@@ -38,14 +39,22 @@ fi
 echo "Source VSIX: $source_path"
 echo "Target folder: $target_folder"
 
-target_path="custom-extensions/$target_folder"
+target_path="$target_parent/$target_folder"
 
-echo target path: $target_path
+if [ ! -d "$target_parent" ]; then
+	echo "Parent folder '$target_parent' doesn't exist"
+	echo "Creating parent folder..."
+	mkdir "$target_parent"
+fi
 
 if [ -d "$target_path" ]; then
 	echo "Folder '$target_path' already exists"
 	echo "Deleting existing destination folder..."
 	rm -rf "$target_path"
 fi
+
+echo "Extracting VSIX '$source_path' to '$target_path'"
+
+unzip "$source_path" -d "$target_path"
 
 exit $?
